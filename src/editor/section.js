@@ -22,7 +22,7 @@ export function buildSection({ node, path, onChange, expandState, objectOrders, 
     deleteBtn.disabled = true;
 
     controlBar.append(selectBtn, deleteBtn);
-    section.appendChild(controlBar);
+   // section.appendChild(controlBar);
 
     const rowsContainer = document.createElement('div');
     rowsContainer.className = 'rows-container';
