@@ -1,4 +1,4 @@
-import { buildSection } from './section.js';
+import { buildSection } from './section/index.js';
 import { serializeWithOrder } from './utils.js';
 
 export function createJsonEditor(container, data, onChange) {
