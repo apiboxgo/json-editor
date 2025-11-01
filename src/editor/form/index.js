@@ -2,10 +2,13 @@ import { createInputs } from './inputs.js';
 import { validateKey } from './validation.js';
 import { buildLayout } from './layout.js';
 import { resetForm } from './helpers.js';
+import { formTemplate } from '@templates/formTemplates.js';
 import { t } from '@i18n/index.js';
 
 export function createAddForm(node, path, rowsContainer, objectOrders, onChange, onCancel, buildSection, expandState) {
-    const form = buildLayout();
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = formTemplate(t);
+    const form = wrapper.firstElementChild;
 
     const { keyInput, typeSelect, valueContainer, createBtn, cancelBtn, errorEl } = createInputs(form);
 

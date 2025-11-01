@@ -1,9 +1,12 @@
 import { detectType, parseValue, pathToKey, TEXTAREA_FIELDS, TEXTAREA_LENGTH_THRESHOLD } from './utils.js';
 import { showConfirmModal } from './modal.js';
+import { CLASSES } from '@editor/classes.js';
+import { ICONS } from '@templates/iconsTemplate.js';
+import {selectOptions} from '@templates/sectionTemplates.js'
 
 export function createRow({ parent, key, value, path, onChange, buildSection, expandState, objectOrders }) {
     const row = document.createElement('div');
-    row.className = 'mb-2 p-2 border rounded bg-white';
+    row.className = CLASSES.row;
     row.draggable = true;
     row.dataset.row = 'json-row';
 
@@ -15,34 +18,34 @@ export function createRow({ parent, key, value, path, onChange, buildSection, ex
     });
 
     const line = document.createElement('div');
-    line.className = 'd-flex align-items-start gap-2 flex-wrap';
+    line.className = CLASSES.rowLine;
 
     // чекбокс мультивыбора
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    checkbox.className = 'form-check-input json-row-checkbox';
+    checkbox.className = CLASSES.formCheckboxInput;
     checkbox.style.display = 'none';
     line.appendChild(checkbox);
 
     const dragHandle = document.createElement('span');
-    dragHandle.className = 'badge text-bg-light user-select-none';
+    dragHandle.className = CLASSES.badgeLight;
     dragHandle.textContent = '↕';
     dragHandle.style.cursor = 'grab';
 
     const toggleBtn = document.createElement('button');
-    toggleBtn.className = 'btn btn-sm btn-link p-0 text-decoration-none';
+    toggleBtn.className = CLASSES.toggleBtn;
     const isNested = typeof value === 'object' && value !== null;
     toggleBtn.style.visibility = isNested ? 'visible' : 'hidden';
-    toggleBtn.textContent = '▶️';
+    toggleBtn.textContent = ICONS.iconRight;
 
     let keyControl;
     if (Array.isArray(parent)) {
         keyControl = document.createElement('span');
-        keyControl.className = 'badge text-bg-secondary';
+        keyControl.className = CLASSES.badgeSecondary;
         keyControl.textContent = String(key);
     } else {
         keyControl = document.createElement('input');
-        keyControl.className = 'form-control form-control-sm';
+        keyControl.className = CLASSES.formInput;
         keyControl.style.width = '220px';
         keyControl.value = String(key);
         keyControl.addEventListener('change', () => {
@@ -59,7 +62,7 @@ export function createRow({ parent, key, value, path, onChange, buildSection, ex
     }
 
     const valueContainer = document.createElement('div');
-    valueContainer.className = 'flex-grow-1';
+    valueContainer.className = CLASSES.valueContainer;
 
     if (isNested) {
         const nestedPath = [...path, key];
@@ -77,13 +80,13 @@ export function createRow({ parent, key, value, path, onChange, buildSection, ex
 
         if (expandState.get(nestedKey)) {
             nested.classList.add('show');
-            toggleBtn.textContent = '🔽';
+            toggleBtn.textContent = ICONS.iconBottom;
         }
 
         toggleBtn.onclick = () => {
             const isShown = nested.classList.contains('show');
             nested.classList.toggle('show');
-            toggleBtn.textContent = isShown ? '▶️' : '🔽';
+            toggleBtn.textContent = isShown ? ICONS.iconRight : ICONS.iconBottom;
             expandState.set(nestedKey, !isShown);
         };
 
@@ -100,8 +103,8 @@ export function createRow({ parent, key, value, path, onChange, buildSection, ex
 
     // ✅ создаём кнопку удаления ДО использования
     const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'btn btn-sm btn-outline-danger';
-    deleteBtn.textContent = '🗑️';
+    deleteBtn.className = CLASSES.btnDanger;
+    deleteBtn.textContent = ICONS.iconBacked;
     deleteBtn.onclick = () =>
         showConfirmModal('single', () => {
             if (Array.isArray(parent)) parent.splice(Number(key), 1);
@@ -128,8 +131,8 @@ function makeValueInput(key, value, type) {
 
     if (type === 'boolean') {
         const sel = document.createElement('select');
-        sel.className = 'form-select form-select-sm';
-        sel.innerHTML = `<option value="true">true</option><option value="false">false</option>`;
+        sel.className = CLASSES.formSelect;
+        sel.innerHTML = selectOptions();
         sel.value = value ? 'true' : 'false';
         return sel;
     }
@@ -137,14 +140,14 @@ function makeValueInput(key, value, type) {
     if (type === 'number') {
         const inp = document.createElement('input');
         inp.type = 'number';
-        inp.className = 'form-control form-control-sm';
+        inp.className = CLASSES.formInput;
         inp.value = value ?? 0;
         return inp;
     }
 
     if (isTextarea) {
         const ta = document.createElement('textarea');
-        ta.className = 'form-control form-control-sm';
+        ta.className = CLASSES.formInput;
         ta.rows = 2;
         ta.value = value ?? '';
         return ta;
@@ -152,7 +155,7 @@ function makeValueInput(key, value, type) {
 
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.className = 'form-control form-control-sm';
+    inp.className = CLASSES.formInput;
     inp.value = value ?? '';
     return inp;
 }

@@ -1,12 +1,13 @@
 import { t } from '@i18n/index.js';
+import { CLASSES } from '@editor/classes.js';
 
 export function createInputs(form) {
     const keyInput = document.createElement('input');
-    keyInput.className = 'form-control form-control-sm';
+    keyInput.className = CLASSES.formInput;
     keyInput.placeholder = t.labels.newKey;
 
     const typeSelect = document.createElement('select');
-    typeSelect.className = 'form-select form-select-sm';
+    typeSelect.className = CLASSES.formSelect;
     ['string', 'number', 'boolean', 'array', 'object', 'textarea'].forEach(opt => {
         const o = document.createElement('option');
         o.value = opt;
@@ -15,18 +16,18 @@ export function createInputs(form) {
     });
 
     const valueContainer = document.createElement('div');
-    valueContainer.className = 'mt-2';
+    valueContainer.className = CLASSES.addArea;
 
     const createBtn = document.createElement('button');
-    createBtn.className = 'btn btn-sm btn-success me-2';
+    createBtn.className = CLASSES.btnCreate;
     createBtn.textContent = t.buttons.create;
 
     const cancelBtn = document.createElement('button');
-    cancelBtn.className = 'btn btn-sm btn-secondary';
+    cancelBtn.className = CLASSES.btnCancel;
     cancelBtn.textContent = t.buttons.cancel;
 
     const errorEl = document.createElement('div');
-    errorEl.className = 'text-danger small mt-1';
+    errorEl.className = CLASSES.errorMessage;
     errorEl.style.display = 'none';
 
     form.append(keyInput, typeSelect, valueContainer, createBtn, cancelBtn, errorEl);
